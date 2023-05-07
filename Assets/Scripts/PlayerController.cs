@@ -4,12 +4,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D playerRb;
-    private float speed = 5f;
+    public GameObject bodyObject;
+
+
+    private int bodyCount = 2;
+    private List<Rigidbody2D> bodyRbs = new List<Rigidbody2D>();
+    private int bodyCurrent = 0;
+    private float speed = 6f;
     // Start is called before the first frame update
     void Start()
     {
-        playerRb = GetComponent<Rigidbody2D>();
+        for (int i = 0; i < bodyCount; i++) {
+            GameObject newBody = Instantiate(bodyObject, new Vector2(0, 0), Quaternion.identity);
+            bodyRbs.Add(newBody.GetComponent<Rigidbody2D>());
+        }
     }
 
     // Update is called once per frame
@@ -37,6 +45,15 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.S)) moveDir.y -= 1;
 
         moveDir.Normalize();
-        playerRb.velocity = speed * moveDir;
+        bodyRbs[bodyCurrent].velocity = speed * moveDir;
+
+        // Swapping body
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // Stop the current body.
+            bodyRbs[bodyCurrent].velocity = Vector2.zero;
+            // Change body.
+            bodyCurrent = (bodyCurrent + 1) % bodyCount;
+        }
     }
 }
