@@ -5,19 +5,30 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public GameObject bodyObject;
+    public GameObject weaponObject;
 
 
     private int bodyCount = 2;
-    private List<Rigidbody2D> bodyRbs = new List<Rigidbody2D>();
+    private List<BodyController> bodyRbs = new List<BodyController>();
     private int bodyCurrent = 0;
     private float speed = 6f;
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < bodyCount; i++) {
-            GameObject newBody = Instantiate(bodyObject, new Vector2(0, 0), Quaternion.identity);
-            bodyRbs.Add(newBody.GetComponent<Rigidbody2D>());
+        // Create initial bodies.
+
+        // Manually instantiate the color of the first boject.
+        GameObject newBody = Instantiate(bodyObject, Vector2.zero, Quaternion.identity);
+        bodyRbs.Add(newBody.GetComponent<BodyController>());
+        newBody.GetComponent<SpriteRenderer>().color = Color.blue;
+        // Create the rest
+        for (int i = 1; i < bodyCount; i++) {
+            newBody = Instantiate(bodyObject, new Vector2(0, 0), Quaternion.identity);
+            bodyRbs.Add(newBody.GetComponent<BodyController>());
         }
+
+        // Creating weapon
+        weaponObject = Instantiate(weaponObject, Vector2.zero, Quaternion.identity);
     }
 
     // Update is called once per frame
@@ -45,15 +56,30 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKey(KeyCode.S)) moveDir.y -= 1;
 
         moveDir.Normalize();
-        bodyRbs[bodyCurrent].velocity = speed * moveDir;
+        bodyRbs[bodyCurrent].setVelocity(speed * moveDir);
 
         // Swapping body
         if (Input.GetKeyDown(KeyCode.Space))
         {
             // Stop the current body.
-            bodyRbs[bodyCurrent].velocity = Vector2.zero;
+            bodyRbs[bodyCurrent].setVelocity(Vector2.zero);
+            bodyRbs[bodyCurrent].setColor(false);
             // Change body.
             bodyCurrent = (bodyCurrent + 1) % bodyCount;
+            bodyRbs[bodyCurrent].setColor(true);
         }
+
+        // Creation of new bodies (incomplete)
+        if (Input.GetMouseButtonDown(0)) {
+            bodyCount++;
+            GameObject newBody = Instantiate(bodyObject, new Vector2(0, 0), Quaternion.identity);
+            bodyRbs.Add(newBody.GetComponent<BodyController>());
+        }
+    }
+
+    private void LateUpdate()
+    {
+        // Update weapon position
+        weaponObject.transform.position = bodyRbs[bodyCurrent].transform.position;
     }
 }
