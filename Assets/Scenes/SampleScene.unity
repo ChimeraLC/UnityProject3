@@ -383,6 +383,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bodyObject: {fileID: 5789116398741790610, guid: 7dd07f1fe672900428343a4baf19c145, type: 3}
   weaponObject: {fileID: 314826303657117803, guid: 53d34fe766e7fa442b30dbf8d5b1adc1, type: 3}
+  weaponHitboxObject: {fileID: 6286642349180888993, guid: b6c7330bdbab95245a806147587a1f17, type: 3}
 --- !u!4 &1331059874
 Transform:
   m_ObjectHideFlags: 0
