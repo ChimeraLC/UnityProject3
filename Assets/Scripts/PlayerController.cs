@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
+    // Body control
     public GameObject bodyObject;
-    public GameObject weaponObject;
-
-
     private int bodyCount = 2;
     private List<BodyController> bodyRbs = new List<BodyController>();
     private int bodyCurrent = 0;
     private float speed = 6f;
+
+    // Weapon control
+    public GameObject weaponObject;
+    private float weaponAngle = 50;
+    
+    private float mouseAngle;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -43,8 +49,8 @@ public class PlayerController : MonoBehaviour
 
         //mouse position
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        float mouseAngle = Mathf.Atan2(mousePosition.x - transform.position.x,
-            mousePosition.y - transform.position.y) * Mathf.Rad2Deg;
+        mouseAngle = Mathf.Atan2(mousePosition.x - bodyRbs[bodyCurrent].transform.position.x,
+            mousePosition.y - bodyRbs[bodyCurrent].transform.position.y) * Mathf.Rad2Deg;
 
         /*
         * movement control
@@ -81,5 +87,6 @@ public class PlayerController : MonoBehaviour
     {
         // Update weapon position
         weaponObject.transform.position = bodyRbs[bodyCurrent].transform.position;
+        weaponObject.transform.rotation = Quaternion.Euler(Vector3.forward * (-mouseAngle + 45 + weaponAngle));
     }
 }
