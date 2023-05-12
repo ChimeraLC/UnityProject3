@@ -7,10 +7,11 @@ public class PlayerController : MonoBehaviour
 
         // Body control
         public GameObject bodyObject;
-        private int bodyCount = 2;
+        private int bodyCount = 1;
         private List<BodyController> bodyRbs = new List<BodyController>();
         private int bodyCurrent = 0;
         private float speed = 6f;
+        public Vector2 currentPos = Vector2.zero;
 
         // Weapon control
         public GameObject weaponObject;
@@ -20,7 +21,7 @@ public class PlayerController : MonoBehaviour
         private float weaponCoef = 1;
     
         private float mouseAngle;
-    
+
         // Start is called before the first frame update
         void Start()
         {
@@ -66,6 +67,7 @@ public class PlayerController : MonoBehaviour
 
                 moveDir.Normalize();
                 bodyRbs[bodyCurrent].setVelocity(speed * moveDir);
+                currentPos = bodyRbs[bodyCurrent].transform.position;
 
                 // Swapping body
                 if (Input.GetKeyDown(KeyCode.Space))
@@ -76,6 +78,7 @@ public class PlayerController : MonoBehaviour
                         // Change body.
                         bodyCurrent = (bodyCurrent + 1) % bodyCount;
                         bodyRbs[bodyCurrent].setColor(true);
+
                 }
 
                 // Creation of new bodies (incomplete)
