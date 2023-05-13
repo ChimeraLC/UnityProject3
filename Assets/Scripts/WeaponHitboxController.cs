@@ -18,4 +18,15 @@ public class WeaponHitboxController : MonoBehaviour
                 lifetime += Time.deltaTime;
                 if (lifetime > 0.25) Destroy(gameObject);
         }
+
+        // Interaction with enemies
+        void OnTriggerEnter2D(Collider2D collision)
+        {
+                //Debug.Log("Found");
+                if (collision.tag == "Enemy") {
+                        //collision.GetComponent<Rigidbody2D>().velocity = new Vector2(5, 0);
+                        //Debug.Log("Hit");
+                        collision.GetComponent<EnemyControllerB>().Hit();
+                }
+        }
 }

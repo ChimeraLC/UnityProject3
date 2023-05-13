@@ -133,59 +133,17 @@ GameObject:
   m_Component:
   - component: {fileID: 475623488}
   - component: {fileID: 475623487}
-  - component: {fileID: 475623491}
+  - component: {fileID: 475623494}
   - component: {fileID: 475623485}
-  - component: {fileID: 475623484}
-  - component: {fileID: 475623489}
-  m_Layer: 0
+  - component: {fileID: 475623492}
+  - component: {fileID: 475623493}
+  m_Layer: 7
   m_Name: EnemyTest
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &475623484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 475623482}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6eb1402c17e84a9282a7f0f62eb584f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  version: 5
-  radius: 0.5
-  height: 1
-  canMove: 1
-  maxSpeed: 1
-  gravity: {x: NaN, y: NaN, z: NaN}
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  centerOffsetCompatibility: NaN
-  repathRateCompatibility: NaN
-  canSearchCompability: 0
-  orientation: 1
-  enableRotation: 0
-  autoRepath:
-    mode: 2
-    interval: 0.5
-    sensitivity: 10
-    maximumInterval: 2
-    visualizeSensitivity: 0
-  targetCompatibility: {fileID: 0}
-  maxAcceleration: -2.5
-  rotationSpeed: 360
-  slowdownDistance: 0.6
-  pickNextWaypointDist: 2
-  endReachedDistance: 0.2
-  alwaysDrawGizmos: 0
-  slowWhenNotFacingTarget: 1
-  whenCloseToDestination: 0
-  constrainInsideGraph: 0
 --- !u!114 &475623485
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -281,25 +239,54 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!143 &475623489
-CharacterController:
+--- !u!50 &475623492
+Rigidbody2D:
+  serializedVersion: 4
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 475623482}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!61 &475623493
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 475623482}
+  m_Enabled: 1
+  m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
   serializedVersion: 2
-  m_Height: 1
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &475623491
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!114 &475623494
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -308,10 +295,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 475623482}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 061850d724cd7b7499e38cb0e889721d, type: 3}
+  m_Script: {fileID: 11500000, guid: f73143b39c5dc4f4c93b2001ca2436fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 1
+  targetPosition: {fileID: 0}
+  speed: 2
+  nextWaypointDistance: 3
+  reachedEndOfPath: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -572,7 +562,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   data:
-    dataString: UEsDBBQAAAgIAACQn+uQgiC2TwIAAAwFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQF1VMty2kAQ/BVqz3EKsENIbonAOAdsyjjliy6DdoS2WO2q9sHDLv49sysJySQ5Ibp7Znoe0jsTylaYOW0WRvCl5si+D1h4Zp8GHfmAR9hqtRZv2GpeBXdFEEHUPIMTmvBRCLO6RGdE9kNtZRAPCfRK5NqUc77FRFtnCc5BWiTKaBeiFUHvA3akn28h4tREvoXfwZmeMlQOTSf7t8qrTEJZIQ92O/G4VY9qmaJGGkUwnWkphW1cMHeqYpcJVNZTDyTgAqirWD7oCxTbwoW8/eCnPLfoGksGTjNhaDh1VvZT1xMrwe5qX3uQPtSZ3EVLdc7lX/TNKNK50eVDW3Y0DCVcIbLdM5wysK430T48++jbqwPIHWwkvhaoHvXCaK84kc74EOotjmfd30tnSYHZrsNrq1egr/6/G2rhHHs/JlKUm8B8vquBtdRx2nHraGgvv8hvPAnbZCA0mPht8QW2/dtpiHthrCOqaVIFdxvtTZCyeRxZaMa7RBuFEW48V6hAutOK0rjrBV5xvbJXzD2Et6Qp3nDt8V+FRLjTD4dX1EofLruyhT4s0RZP3kmhsDMdiEeaU6KVqu+rP5M2bO1NDlkvbOsF/3hZbIrTzWg0zTkHmIzHcPNlg/zr5HY4uc2HMJ1mLJ6eUNQnyFVttBkPbU11yRWdWfvxGCwMVPHWuYHDQryVujdyoXK9zgyieqozXIyjoSL0TvI5FzSgNTonVNw3e0+Z1NkOeXpJlMZO50dnIO2ypKwSe+0CkrIkfjFSFuDLKa8M7gUeQvE22Zmd/wBQSwMEFAAACAgAAJCf65v37q9tAAAAeAAAAAkAJABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQGrVipLLSrOzM9TslIw0TPSMzTXUVBKL0osyCgGihiCOKWZKSB2tJJFqkWSoaFFWkpKYqKZkVGirmlSaoq5mbGBmXGaQaKFRbJSLFB9SWVBql9ibipET0BiSUZaZl5KZl66nntRZoo7yGil2FoAUEsBAi0AFAAACAgAAJCf65CCILZPAgAADAUAAAsAJAAAAAAAAAAAAAAAAAAAAGdyYXBoMC5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0BUEsBAi0AFAAACAgAAJCf65v37q9tAAAAeAAAAAkAJAAAAAAAAAAAAAAAnAIAAG1ldGEuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLBQYAAAAAAgACALgAAABUAwAAAAA=
+    dataString: UEsDBBQAAAgIAACQn+tjdHPnUAIAAAsFAAALACQAZ3JhcGgwLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQF1VMuS2jAQ/BVK52wKw4aQ3BJg2RxYqCWpvfgyWGOsQpZcksxri3/PSLax4yQnTHfPTM/DfmdC2QITp83SCL7SHNnXAfPP7MOgJZ/xDHuttuKKjeZNcJd5EQTNKzihCY98mNU5OiOSb2ovvXhIYKlEqk2+4HucaesswSlIi0QZ7Xy0Iuh9wM7088VHXOrIq/8d3OgpQeXQtLJ/q0qVSMgL5N5uKx416qiSKWqkVnjTiZZS2NoFc5cidLktMjTo2+QCqKlQfUx/MxT7zPm03dh1mlp0tSMDl7kwNJsqKfuuq4HlYA+VrSPI0peZPAZHVc7VX/RDFOjU6Py5KRsNfQmXieTwCpcErOsMtAvPW99RGM4J5AF2Et8yVC96aXSpOJHOlD60tDiat3/vnc0yTA4tXlntgWXx/9VQC7fQ+3kmRb7zzMfHCthKHYYdlo6G1vKD/IaLsHUGQr2JXxZ/wr57OjXxJIx1RNVNKu9up0vjpWwRRuabKd1MG4UBrj0XqEC6y4bSuP4Ce1ynbI95Av+S1MVrrrn9XkiAW/1w2KM2+nTflc30aYU2W5dOCoWtaU+80JxmWqnqvrozacK2pUkh6YTtS8H/vCw2xekuiqYp5wCT0QgePu2Qf56Mh5NxOoTpNGHh9ISiPkFuKqP1eGhrqk2u6Myab8dgaaAIt84NnJbimuvOyIVK9TYxiGpdZbgbR0NF6JXkCy5oQFt0Tqiwb/YeM6mTA/L4nigOnS7OzkDcZolZIY7aeSRms/DBiJmH76e8MXgUePLFm2Q3dvsNUEsDBBQAAAgIAACQn+ub9+6vbQAAAHgAAAAJACQAbWV0YS5qc29uCgAgAAAAAAABABgAAIA+1d6xnQEAgD7V3rGdAQCAPtXesZ0Bq1YqSy0qzszPU7JSMNEz0jM011FQSi9KLMgoBooYgjilmSkgdrSSRapFkqGhRVpKSmKimZFRoq5pUmqKuZmxgZlxmkGihUWyUixQfUllQapfYm4qRE9AYklGWmZeSmZeup57UWaKO8hopdhaAFBLAQItABQAAAgIAACQn+tjdHPnUAIAAAsFAAALACQAAAAAAAAAAAAAAAAAAABncmFwaDAuanNvbgoAIAAAAAAAAQAYAACAPtXesZ0BAIA+1d6xnQEAgD7V3rGdAVBLAQItABQAAAgIAACQn+ub9+6vbQAAAHgAAAAJACQAAAAAAAAAAAAAAJ0CAABtZXRhLmpzb24KACAAAAAAAAEAGAAAgD7V3rGdAQCAPtXesZ0BAIA+1d6xnQFQSwUGAAAAAAIAAgC4AAAAVQMAAAAA
     upgradeData: 
     file_cachedStartup: {fileID: 0}
     data_cachedStartup: 
@@ -585,7 +575,7 @@ MonoBehaviour:
   manualDebugFloorRoof: 0
   showSearchTree: 0
   unwalkableNodeDebugSize: 0.3
-  logPathResults: 1
+  logPathResults: 4
   maxNearestNodeDistance: 100
   scanOnStartup: 1
   fullGetNearestSearch: 0
@@ -780,7 +770,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1935833997}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.004, y: -0.0209, z: 0}
+  m_LocalPosition: {x: 1.47, y: 0.56, z: 0}
   m_LocalScale: {x: 1.8948367, y: 5.8985953, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
