@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponHitboxController : MonoBehaviour
+public class OldWeaponHitboxController : MonoBehaviour
 {
         private float lifetime;
+        public float angle;
         // Start is called before the first frame update
         void Start()
         {
@@ -26,7 +27,7 @@ public class WeaponHitboxController : MonoBehaviour
                 if (collision.tag == "Enemy") {
                         //collision.GetComponent<Rigidbody2D>().velocity = new Vector2(5, 0);
                         //Debug.Log("Hit");
-                        collision.GetComponent<EnemyControllerB>().Hit();
+                        collision.GetComponent<OldEnemyControllerA>().PlayerHit(angle);
                 }
         }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BodyController : MonoBehaviour
+public class OldBodyController : MonoBehaviour
 {
     private Rigidbody2D bodyRb;
     private SpriteRenderer bodySprite;

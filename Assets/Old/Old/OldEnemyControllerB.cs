@@ -1,12 +1,13 @@
-using Pathfinding;
+//using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyControllerB : MonoBehaviour
+public class OldEnemyControllerB : MonoBehaviour
 {
+        /*
         // Player controller
-        private PlayerController target;
+        private OldPlayerController target;
         private Rigidbody2D bodyRb;
 
         public int state = 0;
@@ -26,7 +27,7 @@ public class EnemyControllerB : MonoBehaviour
                 if (ai != null) ai.onSearchPath += Update;
 
 
-                target = GameObject.Find("PlayerController").GetComponent<PlayerController>();
+                target = GameObject.Find("PlayerController").GetComponent<OldPlayerController>();
 
         }
 
@@ -54,4 +55,5 @@ public class EnemyControllerB : MonoBehaviour
         {
                 state = 1;
         }
+        */
 }

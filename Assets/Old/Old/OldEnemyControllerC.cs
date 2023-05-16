@@ -1,16 +1,17 @@
-using Pathfinding;
+//using Pathfinding;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyControllerC : MonoBehaviour
+public class OldEnemyControllerC : MonoBehaviour
 {
+        /*
         public Transform targetPosition;
 
-        private Seeker seeker;
+        //private Seeker seeker;
         private Rigidbody2D bodyRb;
 
-        public Path path;
+        //public Path path;
 
         public float speed = 2;
 
@@ -22,7 +23,7 @@ public class EnemyControllerC : MonoBehaviour
 
         public void Start()
         {
-                seeker = GetComponent<Seeker>();
+                //seeker = GetComponent<Seeker>();
                 // If you are writing a 2D game you should remove this line
                 // and use the alternative way to move sugggested further below.
                 bodyRb = GetComponent<Rigidbody2D>();
@@ -31,7 +32,7 @@ public class EnemyControllerC : MonoBehaviour
                 // when the path has been calculated (which may take a few frames depending on the complexity)
                 seeker.StartPath(transform.position, new Vector2(-5, 0), OnPathComplete);
         }
-
+        /*
         public void OnPathComplete(Path p)
         {
                 Debug.Log("A path was calculated. Did it fail with an error? " + p.error);
@@ -43,9 +44,11 @@ public class EnemyControllerC : MonoBehaviour
                         currentWaypoint = 0;
                 }
         }
+        */
 
         public void Update()
         {
+                /*
                 if (path == null)
                 {
                         // We have no path to follow yet, so don't do anything
@@ -100,5 +103,6 @@ public class EnemyControllerC : MonoBehaviour
 
                 // If you are writing a 2D game you should remove the CharacterController code above and instead move the transform directly by uncommenting the next line
                 // transform.position += velocity * Time.deltaTime;
+                */
         }
 }
