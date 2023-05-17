@@ -6,6 +6,10 @@ public class BobberController : MonoBehaviour
 {
         private Vector2 destination;
         private Vector2 pathPosition;
+        private Vector2 direction;
+        private Vector2 velocity;
+
+        private int state;
 
         private float totalDistance;
         // Start is called before the first frame update
@@ -20,16 +24,31 @@ public class BobberController : MonoBehaviour
         {
                 
                 // Once destination set
-                if (destination != null) {
-                        pathPosition = Vector2.Lerp(pathPosition, destination, 0.005f);
+                if (destination != null && state == 0) {
+                        // Simulated slowdown.
+                        pathPosition += velocity * Time.deltaTime;
+                        velocity -= 6 * direction * Time.deltaTime;
+
+                        // Additional upward stuff.
+                        transform.position = pathPosition +
+                            new Vector2(0, totalDistance / 4 * Mathf.Sin(Mathf.PI * velocity.magnitude / totalDistance));
+
+                        // Landing in water.
+                        // Check if velocity reaches 0
+                        if (Vector2.Dot(velocity, direction) < 0) {
+                                state = 1;
+                                pathPosition = transform.position;
+                        }
+
                 }
 
-                transform.position = pathPosition + 
-                        new Vector2 (0, 3 * Mathf.Sin(Mathf.PI * (destination - pathPosition).magnitude / totalDistance));
+
         }
 
         public void SetDestination(Vector2 destination) {
                 this.destination = destination;
-                totalDistance = (destination - (Vector2) transform.position).magnitude;
+                velocity = (destination - (Vector2)transform.position) * 1.5f;
+                totalDistance = velocity.magnitude;
+                direction = velocity.normalized;
         }
 }
