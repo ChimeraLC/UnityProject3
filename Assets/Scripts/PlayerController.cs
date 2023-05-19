@@ -11,10 +11,7 @@ public class PlayerController : MonoBehaviour
         private PlayerSpriteController playerSprite;
         private RodController rodController;
 
-        private float boundRight;
-        private float boundLeft;
-        private float boundUp;
-        private float boundDown;
+        private float[] bounds = { 3, -3, 1.5f, -1.5f };
 
         private float speed = 2;
         // Start is called before the first frame update
@@ -30,14 +27,10 @@ public class PlayerController : MonoBehaviour
                 GameObject rod = Instantiate(fishingRod, transform.position, Quaternion.identity);
                 rod.transform.parent = transform;
                 rodController = rod.GetComponent<RodController>();
+                rodController.SetBounds(bounds);
 
                 playerSprite.SetRod(rod);
-
-                // Setting bounds
-                boundRight = 3;
-                boundLeft = -3;
-                boundUp = 1;
-                boundDown = -1;
+                        
         }
 
         // Update is called once per frame
@@ -64,10 +57,10 @@ public class PlayerController : MonoBehaviour
 
                 // Remaining in bounds.
                 Vector2 boundPos = transform.position;
-                boundPos.x = Mathf.Min(transform.position.x, boundRight); 
-                boundPos.x = Mathf.Max(boundPos.x, boundLeft);
-                boundPos.y = Mathf.Min(transform.position.y, boundUp);
-                boundPos.y = Mathf.Max(boundPos.y, boundDown);
+                boundPos.x = Mathf.Min(transform.position.x, bounds[0]); 
+                boundPos.x = Mathf.Max(boundPos.x, bounds[1]);
+                boundPos.y = Mathf.Min(transform.position.y, bounds[2]);
+                boundPos.y = Mathf.Max(boundPos.y, bounds[3]);
 
 
                 transform.position = boundPos;

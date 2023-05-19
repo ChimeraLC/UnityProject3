@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-        
+        public Image boatHealthBar;
+        public float boatHealth = 100f;
 
         // Start is called before the first frame update
         void Start()
@@ -16,6 +17,6 @@ public class GameController : MonoBehaviour
         // Update is called once per frame
         void Update()
         {
-        
+                boatHealthBar.fillAmount = boatHealth / 100;
         }
 }

@@ -12,8 +12,11 @@ public class BobberController : MonoBehaviour
 
         private int state;
         private float lifetime;
+        //boat bounds
+        public float[] bounds;
 
         private GameController gameController;
+        public RodController parentRod;
 
         private float totalDistance;
         // Start is called before the first frame update
@@ -44,6 +47,12 @@ public class BobberController : MonoBehaviour
                         if (Vector2.Dot(velocity, direction) < 0) {
                                 state = 1;
                                 pathPosition = transform.position;
+                                // checking bounds
+                                if (transform.position.x < bounds[0] && transform.position.x > bounds[1] &&
+                                    transform.position.y < bounds[2] && transform.position.y > bounds[3]) {
+                                        Destroy(gameObject);
+                                        parentRod.Reset();
+                                }
                         }
 
                 }
@@ -75,6 +84,13 @@ public class BobberController : MonoBehaviour
                 velocity = (destination - (Vector2)transform.position) * 1.5f;
                 totalDistance = velocity.magnitude;
                 direction = velocity.normalized;
+        }
+
+        public int Pull() {
+                if (state == 2) {
+                        return 1;        
+                }
+                return 0;
         }
 
         // Probability of catching fish
