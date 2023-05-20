@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour
         private PlayerSpriteController playerSprite;
         private RodController rodController;
 
+        public GameController gameController;
+        public BoatController boatController;
         private float[] bounds = { 3, -3, 1.5f, -1.5f };
 
         private float speed = 2;
@@ -28,6 +30,7 @@ public class PlayerController : MonoBehaviour
                 rod.transform.parent = transform;
                 rodController = rod.GetComponent<RodController>();
                 rodController.SetBounds(bounds);
+                rodController.gameController = gameController;
 
                 playerSprite.SetRod(rod);
                         
@@ -69,8 +72,17 @@ public class PlayerController : MonoBehaviour
                 playerSprite.UpdateAnimation(mouseAngle, moveDir.magnitude > 0);
                 rodController.reflectState = (int) Mathf.Sign(mouseAngle);
 
-                if (Input.GetMouseButtonDown(0)) {
+                if (Input.GetMouseButtonDown(0))
+                {
+                        // Set state to casting
+                        gameController.SetState(1);
+                        // Initiate cast.
                         rodController.Cast();
+                }
+
+                // Fixing boat holes (incomplete)
+                if (Input.GetKeyDown(KeyCode.R)) {
+                        boatController.Fix(transform.position.x, transform.position.y);
                 }
         }
 }

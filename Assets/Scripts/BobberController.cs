@@ -15,7 +15,7 @@ public class BobberController : MonoBehaviour
         //boat bounds
         public float[] bounds;
 
-        private GameController gameController;
+        public GameController gameController;
         public RodController parentRod;
 
         private float totalDistance;
@@ -24,8 +24,6 @@ public class BobberController : MonoBehaviour
         {
                 //Debug.Log("Bobber destination: " + destination);
                 pathPosition = transform.position;
-
-                gameController = GameObject.Find("GameController").GetComponent<GameController>();
         }
 
         // Update is called once per frame

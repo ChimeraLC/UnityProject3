@@ -8,6 +8,7 @@ public class RodController : MonoBehaviour
 {
         public GameObject bobber;
         private GameObject curBobber;
+        public GameController gameController;
         private BobberController bobberController;
         private LineRenderer fishingLine;
         private SpriteRenderer spriteRenderer;
@@ -41,6 +42,8 @@ public class RodController : MonoBehaviour
                                 // Minimum chargeup.
                                 if (castAngle > 30)
                                 {
+                                        // Set player state to fishing
+                                        gameController.SetState(2);
                                         castState = 2;
                                         // Mouse position.
                                         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -52,11 +55,15 @@ public class RodController : MonoBehaviour
                                             + (Vector2)transform.parent.position);
                                         bobberController.parentRod = this;
                                         bobberController.bounds = bounds;
+                                        bobberController.gameController = gameController;
                                 }
                                 // Not charged enough.
                                 else {
                                         castState = 0;
                                         castAngle = 0;
+
+                                        // Set player state to idle
+                                        gameController.SetState(0);
                                 }
                         }
                 }
@@ -78,6 +85,7 @@ public class RodController : MonoBehaviour
                         if (bobberController.Pull() == 1)
                         {
                                 Debug.Log("caught!");
+                                gameController.Caught(0);
 
                         }
                         else
@@ -100,7 +108,7 @@ public class RodController : MonoBehaviour
 
                 // Reeling back in
                 if (castState == 2) {
-                        castState = -1;
+                        Reset();
                 }
 
         }
@@ -108,6 +116,8 @@ public class RodController : MonoBehaviour
         public void Reset()
         {
                 castState = -1;
+                // Set state back to idle
+                gameController.SetState(0);
         }
         public void SetBounds(float[] newBounds) {
                 bounds = newBounds;

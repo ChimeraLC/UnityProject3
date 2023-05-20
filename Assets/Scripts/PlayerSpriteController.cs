@@ -41,7 +41,7 @@ public class PlayerSpriteController : MonoBehaviour
                 //bouncing
                 transform.rotation = Quaternion.AngleAxis(10 * (float)Math.Sin(animationTimer * Math.PI / 180), Vector3.forward);
                 transform.localPosition = fishingRod.transform.localPosition = 
-                    new Vector2(0, 0.5f * (float)Math.Abs(Math.Sin(animationTimer * Math.PI / 180)));
+                    new Vector2(0, 0.4f + 0.5f * (float)Math.Abs(Math.Sin(animationTimer * Math.PI / 180)));
         }
 
         // Update alpha of sprite
