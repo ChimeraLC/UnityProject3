@@ -10,9 +10,17 @@ public class BoatController : MonoBehaviour
 
         private GameObject[] holes;
         public GameObject holePrefab;
+        public GameObject progressbarPrefab;
         public GameController gameController;
+
+        // Variables for holes
         private int holeNum = 0;
         private int holeTotal;
+        private float fixTimer = 0;
+        private float fixTimerTotal = 2;
+        private bool fixState = false;
+        private int fixPos;
+        private GameObject curBar;
         // Start is called before the first frame update
         void Start()
         {
@@ -25,7 +33,35 @@ public class BoatController : MonoBehaviour
         // Update is called once per frame
         void Update()
         {
+                // Fixing
+                if (fixState) {
+                        fixTimer += Time.deltaTime;
 
+                        // TODO: draw some sort of progress bar.
+
+                        // Premature release
+                        if (Input.GetKeyUp(KeyCode.R)) {
+                                fixState = false;
+                                fixTimer = 0;
+                                Destroy(curBar);
+                        }
+
+                        // Fixing hole
+                        if (fixTimer > fixTimerTotal) {
+                                fixTimer = 0;
+                                fixState = false;
+                                // Check if theres still a hole there
+                                if (holes[fixPos] != null)
+                                {
+                                        // Destroy object and update variables
+                                        Destroy(holes[fixPos]);
+                                        holes[fixPos] = null;
+                                        holeNum--;
+                                }
+                                // Update boat health
+                                gameController.BoatHeal(20);
+                        }
+                }
         }
         /* Finds a new spot for a hole and creates a hole in that position
          * Returns true if this succeeds and false otherwise.
@@ -49,18 +85,21 @@ public class BoatController : MonoBehaviour
 
                 return true;
         }
-
+        /* Initiate a hole fix attempt at given location.
+         * Returns true if theres a hole there and false otherwise.
+         */
         public bool Fix(float x, float y) {
-                int pos = (int) (x + xScale / 2) + (int) (y + yScale / 2) * (int) xScale;
+                fixPos = (int) (x + xScale / 2) + (int) (y + yScale / 2) * (int) xScale;
                 // Todo: fix check for being at very top of boat
-                if (pos > holeTotal) pos -= (int)xScale;
-                Debug.Log(pos);
-                if (holes[pos] != null) {
-                        Destroy(holes[pos]);
-                        holes[pos] = null;
-                        holeNum--;
+                if (fixPos > holeTotal) fixPos -= (int)xScale;
+                if (holes[fixPos] != null)
+                {
+                        fixState = true;
+                        curBar = Instantiate(progressbarPrefab, (Vector2)holes[fixPos].transform.position +
+                            new Vector2(0, 1), Quaternion.identity);
+                        curBar.GetComponent<ProgressBarController>().totalLifetime = fixTimerTotal;
+                        Debug.Log(fixPos);
                 }
-                gameController.BoatHeal(20);
-                return true;
+                return (holes[fixPos] != null);
         }
 }

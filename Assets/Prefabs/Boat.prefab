@@ -98,3 +98,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   holePrefab: {fileID: 8010510507485510795, guid: 80e29fe5892015c4f937369bf352a43a, type: 3}
+  progressbarPrefab: {fileID: 7656969425841270470, guid: 60a1cef343b06534ca857317eca88b5b, type: 3}
+  gameController: {fileID: 0}
