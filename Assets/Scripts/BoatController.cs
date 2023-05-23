@@ -12,6 +12,7 @@ public class BoatController : MonoBehaviour
         public GameObject holePrefab;
         public GameObject progressbarPrefab;
         public GameController gameController;
+        public PlayerController playerController;
 
         // Variables for holes
         private int holeNum = 0;
@@ -26,7 +27,8 @@ public class BoatController : MonoBehaviour
         {
                 transform.localScale = new Vector2(xScale, yScale);
 
-                holeTotal = (int) xScale * (int) yScale;
+                // Subtract one position for repair materials
+                holeTotal = (int) xScale * (int) yScale - 1;
                 holes = new GameObject[holeTotal];
         }
 
@@ -40,15 +42,21 @@ public class BoatController : MonoBehaviour
                         // TODO: draw some sort of progress bar.
 
                         // Premature release
-                        if (Input.GetKeyUp(KeyCode.R)) {
+                        if (Input.GetKeyUp(KeyCode.R) ||
+                            CalcPos(playerController.transform.position.x,    // Checking if they leave the vacinity
+                            playerController.transform.position.y) != fixPos) {
+                                Debug.Log("failed");
                                 fixState = false;
+                                gameController.SetState(0);
                                 fixTimer = 0;
                                 Destroy(curBar);
                         }
 
+
                         // Fixing hole
                         if (fixTimer > fixTimerTotal) {
                                 fixTimer = 0;
+                                gameController.SetState(0);
                                 fixState = false;
                                 // Check if theres still a hole there
                                 if (holes[fixPos] != null)
@@ -89,17 +97,30 @@ public class BoatController : MonoBehaviour
          * Returns true if theres a hole there and false otherwise.
          */
         public bool Fix(float x, float y) {
-                fixPos = (int) (x + xScale / 2) + (int) (y + yScale / 2) * (int) xScale;
-                // Todo: fix check for being at very top of boat
-                if (fixPos > holeTotal) fixPos -= (int)xScale;
+                fixPos = CalcPos(x, y);
+
                 if (holes[fixPos] != null)
                 {
+                        // Update state
+                        gameController.SetState(3);
+                        // Update internal state
                         fixState = true;
+                        // Create progress bar.
                         curBar = Instantiate(progressbarPrefab, (Vector2)holes[fixPos].transform.position +
                             new Vector2(0, 1), Quaternion.identity);
                         curBar.GetComponent<ProgressBarController>().totalLifetime = fixTimerTotal;
-                        Debug.Log(fixPos);
                 }
                 return (holes[fixPos] != null);
+        }
+
+        // Returns the corresponding hole position of the given position
+        public int CalcPos(float x, float y) { 
+                // Calculating liniarized position.
+                int temp = (int)(x + xScale / 2) + (int)(y + yScale / 2) * (int)xScale;
+                // Checking edges
+                if (x >= (xScale / 2)) temp -= 1;
+                if (y >= (yScale / 2)) temp -= (int) xScale;
+
+                return temp;
         }
 }

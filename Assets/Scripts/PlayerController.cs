@@ -74,15 +74,23 @@ public class PlayerController : MonoBehaviour
 
                 if (Input.GetMouseButtonDown(0))
                 {
-                        // Set state to casting
-                        gameController.SetState(1);
-                        // Initiate cast.
-                        rodController.Cast();
+                        // Check state idle or currently fishing
+                        if (gameController.GetState() == 0 || gameController.GetState() == 2)
+                        {
+                                // Set state to casting
+                                gameController.SetState(1);
+                                // Initiate cast.
+                                rodController.Cast();
+                        }
                 }
 
                 // Fixing boat holes (incomplete)
                 if (Input.GetKeyDown(KeyCode.R)) {
-                        boatController.Fix(transform.position.x, transform.position.y);
+                        // Check state idle
+                        if (gameController.GetState() == 0)
+                        {
+                                boatController.Fix(transform.position.x, transform.position.y);
+                        }
                 }
         }
 }
