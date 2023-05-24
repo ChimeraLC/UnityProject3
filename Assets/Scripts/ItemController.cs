@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class RodController : MonoBehaviour
+public class ItemController : MonoBehaviour
 {
         public GameObject bobber;
         private GameObject curBobber;
@@ -15,6 +15,11 @@ public class RodController : MonoBehaviour
         private int castState = 0;
         private float castAngle;
         public int reflectState = 1;
+
+        // Sprite updates
+        public Sprite sprRod;
+        public Sprite sprRepairs;
+        private int sprState;
 
         // Bounds of boat
         private float[] bounds;
@@ -121,5 +126,19 @@ public class RodController : MonoBehaviour
         }
         public void SetBounds(float[] newBounds) {
                 bounds = newBounds;
+        }
+        // Set the sprite to match the state
+        public void SetSprite(int state) {
+                if (state == 0)
+                {
+                        spriteRenderer.sprite = sprRod;
+                        transform.localScale = new Vector3(2, 2, 1);
+
+                }
+                if (state == 1)
+                {
+                        spriteRenderer.sprite = sprRepairs;
+                        transform.localScale = new Vector3(0.75f, 0.75f, 1);
+                }
         }
 }

@@ -16,7 +16,7 @@ public class BobberController : MonoBehaviour
         public float[] bounds;
 
         public GameController gameController;
-        public RodController parentRod;
+        public ItemController parentRod;
 
         private float totalDistance;
         // Start is called before the first frame update

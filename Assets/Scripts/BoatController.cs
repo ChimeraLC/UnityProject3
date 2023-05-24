@@ -47,17 +47,25 @@ public class BoatController : MonoBehaviour
                             playerController.transform.position.y) != fixPos) {
                                 Debug.Log("failed");
                                 fixState = false;
-                                gameController.SetState(0);
                                 fixTimer = 0;
                                 Destroy(curBar);
+
+                                // Update external objects
+                                gameController.SetState(0);
+                                playerController.ItemSetSprite(1);
+
                         }
 
 
                         // Fixing hole
                         if (fixTimer > fixTimerTotal) {
                                 fixTimer = 0;
-                                gameController.SetState(0);
                                 fixState = false;
+
+                                // Update external objects
+                                gameController.SetState(0);
+                                playerController.ItemSetSprite(0);
+
                                 // Check if theres still a hole there
                                 if (holes[fixPos] != null)
                                 {
@@ -96,10 +104,18 @@ public class BoatController : MonoBehaviour
         /* Initiate a hole fix attempt at given location.
          * Returns true if theres a hole there and false otherwise.
          */
-        public bool Fix(float x, float y) {
+        public void Fix(float x, float y) {
                 fixPos = CalcPos(x, y);
 
-                if (holes[fixPos] != null)
+                // Picking up supplies
+                if (fixPos == holeTotal) {
+                        gameController.SetState(4);
+                        // Update item sprite
+                        playerController.ItemSetSprite(1);
+                }
+
+                // Initiating a fix
+                else if (holes[fixPos] != null && gameController.GetState() == 4)
                 {
                         // Update state
                         gameController.SetState(3);
@@ -110,7 +126,6 @@ public class BoatController : MonoBehaviour
                             new Vector2(0, 1), Quaternion.identity);
                         curBar.GetComponent<ProgressBarController>().totalLifetime = fixTimerTotal;
                 }
-                return (holes[fixPos] != null);
         }
 
         // Returns the corresponding hole position of the given position

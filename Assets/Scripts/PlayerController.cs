@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
 
         private CharacterController playerCC;
         private PlayerSpriteController playerSprite;
-        private RodController rodController;
+        private ItemController itemController;
 
         public GameController gameController;
         public BoatController boatController;
@@ -28,9 +28,9 @@ public class PlayerController : MonoBehaviour
                 // Creating fishing rod.
                 GameObject rod = Instantiate(fishingRod, transform.position, Quaternion.identity);
                 rod.transform.parent = transform;
-                rodController = rod.GetComponent<RodController>();
-                rodController.SetBounds(bounds);
-                rodController.gameController = gameController;
+                itemController = rod.GetComponent<ItemController>();
+                itemController.SetBounds(bounds);
+                itemController.gameController = gameController;
 
                 playerSprite.SetRod(rod);
                         
@@ -70,7 +70,9 @@ public class PlayerController : MonoBehaviour
 
                 // Calling sprite updates.
                 playerSprite.UpdateAnimation(mouseAngle, moveDir.magnitude > 0);
-                rodController.reflectState = (int) Mathf.Sign(mouseAngle);
+                itemController.reflectState = (int) Mathf.Sign(mouseAngle);
+
+                // TODO: redesign to cancel instead of lock out.
 
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -80,17 +82,21 @@ public class PlayerController : MonoBehaviour
                                 // Set state to casting
                                 gameController.SetState(1);
                                 // Initiate cast.
-                                rodController.Cast();
+                                itemController.Cast();
                         }
                 }
 
                 // Fixing boat holes (incomplete)
                 if (Input.GetKeyDown(KeyCode.R)) {
-                        // Check state idle
-                        if (gameController.GetState() == 0)
+                        // Check state idle or currently carrying
+                        if (gameController.GetState() == 0 || gameController.GetState() == 4)
                         {
                                 boatController.Fix(transform.position.x, transform.position.y);
                         }
                 }
+        }
+
+        public void ItemSetSprite(int state) { 
+                itemController.SetSprite(state);
         }
 }
