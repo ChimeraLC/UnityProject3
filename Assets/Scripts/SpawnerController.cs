@@ -18,8 +18,8 @@ public class SpawnerController : MonoBehaviour
         void Update()
         {
                 lifetime += Time.deltaTime;
-                if (lifetime > 2) {
-                        lifetime -= 2;
+                if (lifetime > 3) {
+                        lifetime -= 3;
                         SpawnEnemy();
                 }
         }

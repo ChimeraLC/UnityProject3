@@ -20,4 +20,7 @@ public abstract class FishParentController : MonoBehaviour
 
         // Set direction of fish travel
         public abstract void SetDirection(int dir);
+
+        // What happens when fish is reeled in.
+        public abstract int Reel();
 }

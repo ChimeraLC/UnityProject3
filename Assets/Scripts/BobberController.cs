@@ -6,11 +6,11 @@ using UnityEngine;
 public class BobberController : MonoBehaviour
 {
         private Vector2 destination;
-        private Vector2 pathPosition;
+        public Vector2 pathPosition;
         private Vector2 direction;
         private Vector2 velocity;
 
-        private int state;
+        private int state = 0; //0 - thrown, 1 - sitting, 2 - caught
         private float lifetime;
         //boat bounds
         public float[] bounds;
@@ -18,12 +18,19 @@ public class BobberController : MonoBehaviour
         public GameController gameController;
         public ItemController parentRod;
 
+        private FishParentController clampedFish;
+
+        private BoxCollider2D col;
+
         private float totalDistance;
         // Start is called before the first frame update
         void Start()
         {
                 //Debug.Log("Bobber destination: " + destination);
                 pathPosition = transform.position;
+
+                col = GetComponent<BoxCollider2D>();
+                col.enabled = false;
         }
 
         // Update is called once per frame
@@ -45,6 +52,9 @@ public class BobberController : MonoBehaviour
                         if (Vector2.Dot(velocity, direction) < 0) {
                                 state = 1;
                                 pathPosition = transform.position;
+                                // Enable collider
+                                col.enabled = true;
+
                                 // checking bounds
                                 if (transform.position.x < bounds[0] && transform.position.x > bounds[1] &&
                                     transform.position.y < bounds[2] && transform.position.y > bounds[3]) {
@@ -61,7 +71,6 @@ public class BobberController : MonoBehaviour
 
                         if (lifetime > 2) {
                                 lifetime -= 2;
-                                FishCheck();
                         }
 
                         // Bobbing animation
@@ -86,6 +95,10 @@ public class BobberController : MonoBehaviour
 
         public int Pull() {
                 if (state == 2) {
+                        // Pulling fish
+                        if (clampedFish != null) {
+                                clampedFish.Reel();
+                        }
                         return 1;        
                 }
                 return 0;
@@ -101,5 +114,18 @@ public class BobberController : MonoBehaviour
                 else {
                         state = 1;
                 }
+        }
+        // setters and getters
+        public int GetState() {
+                return state;        
+        }
+
+        public void SetState(int st) {
+                state = st;
+        }
+
+        // Set caught fish
+        public void SetFish(FishParentController fish) {
+                clampedFish = fish;
         }
 }
