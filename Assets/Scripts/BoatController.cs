@@ -52,7 +52,7 @@ public class BoatController : MonoBehaviour
 
                                 // Update external objects
                                 gameController.SetState(0);
-                                playerController.ItemSetSprite(1);
+                                playerController.ItemSetSprite(0);
 
                         }
 
