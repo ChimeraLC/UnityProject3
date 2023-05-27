@@ -9,6 +9,7 @@ public class ItemController : MonoBehaviour
         public GameObject bobber;
         private GameObject curBobber;
         public GameController gameController;
+        public FishParentController clampedFish;
         private BobberController bobberController;
         private LineRenderer fishingLine;
         private SpriteRenderer spriteRenderer;
@@ -77,8 +78,18 @@ public class ItemController : MonoBehaviour
                 if (castState == 2) {
                         // Drawing fishing line and setting angle
                         fishingLine.enabled = true;
-                        castAngle = Mathf.Lerp(castAngle, 0, 0.1f);
-                        fishingLine.SetPosition(0, transform.position + new Vector3(0.5f * reflectState, 0.5f));
+
+                        //Animation for pulling
+                        if (Input.GetMouseButton(0)) {
+                                castAngle = Mathf.Lerp(castAngle, 50, 0.3f);
+                        }
+                        else
+                        {
+                                castAngle = Mathf.Lerp(castAngle, 0, 0.1f);
+                        }
+                        fishingLine.SetPosition(0, transform.position + 
+                            new Vector3(Mathf.Cos(Mathf.Deg2Rad * (castAngle + 45)) * reflectState / 1.5f, 
+                            Mathf.Sin(Mathf.Deg2Rad * (castAngle + 45)) / 1.5f));
                         fishingLine.SetPosition(1, curBobber.transform.position);
                 }
 
@@ -86,21 +97,17 @@ public class ItemController : MonoBehaviour
                 if (castState == -1) {
                         castState = 0;
                         fishingLine.enabled = false;
-                        // Check state of bobber
-                        if (bobberController.Pull() == 1)
-                        {
-                                Debug.Log("caught!");
-                                gameController.Caught(0);
 
-                        }
-                        else
-                        {
-                                Debug.Log("not caught.");
-                        }
+                        // Check state of bobber
+                        bobberController.Pull();
                         // Destroy bobber
                         Destroy(curBobber);
                 }
 
+                // Reset angle
+                if (castState == 0) {
+                        castAngle = Mathf.Lerp(castAngle, 0, 0.1f);
+                }
                 transform.rotation = Quaternion.Euler(Vector3.forward * castAngle * reflectState);
         }
         // Cast fishing rod.
@@ -113,16 +120,25 @@ public class ItemController : MonoBehaviour
 
                 // Reeling back in
                 if (castState == 2) {
-                        Reset();
+                        if (clampedFish == null)
+                        {
+                                Reset();
+                        }
+                        // Call fish's reel mechanic
+                        else {
+                                gameController.SetState(5);
+                                clampedFish.Reel();
+                        }
                 }
 
         }
-        // If casting fails
+        // Reset function that sets fishing rod back to normal state.
         public void Reset()
         {
                 castState = -1;
                 // Set state back to idle
                 gameController.SetState(0);
+                clampedFish = null;
         }
         public void SetBounds(float[] newBounds) {
                 bounds = newBounds;

@@ -6,6 +6,8 @@ public class SpawnerController : MonoBehaviour
 {
 
         public GameObject fish;
+        public GameController gameController;
+        private BobberController bob;
 
         private float lifetime;
         // Start is called before the first frame update
@@ -25,7 +27,10 @@ public class SpawnerController : MonoBehaviour
         }
         // Spawn a fish?
         void SpawnEnemy() {
-                Instantiate(fish, new Vector2(-12, Random.Range(-3, 3)), Quaternion.identity)
-                    .GetComponent<FishParentController>().SetDirection(1);
+                // Creating fish
+                fish = Instantiate(fish, new Vector2(-12, Random.Range(-3, 3)), Quaternion.identity);
+                // Setting inital stuff
+                fish.GetComponent<FishParentController>().SetDirection(1);
+                fish.GetComponent<FishParentController>().gameController = gameController;
         }
 }

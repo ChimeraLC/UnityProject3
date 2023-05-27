@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-// Simple fish class, requires clicking to reel in
-public class Fish1Controller : FishParentController
+public class Fish2Controller : FishParentController
 {
         private int direction = -1;
-        private int state = 0; //0, swimming, 1, clamped
+        private int state = 0; //0, swimming, 1, clamped, 2, reeling;
 
         private float degrees = 0;
+        private float pullTime = 0;
         private Animator fishAnim;
         // Start is called before the first frame update
         void Start()
@@ -30,11 +30,20 @@ public class Fish1Controller : FishParentController
                                 Destroy(gameObject);
                         } 
                 }
-                if (state == 1) { 
+                if (state >= 1) { 
                         transform.rotation = Quaternion.Euler(Vector3.forward * degrees);
                         transform.position = bob.transform.position + new Vector3(-Mathf.Cos(Mathf.Deg2Rad * degrees) * 1,
                             -Mathf.Sin(Mathf.Deg2Rad * degrees) * 1, 0);
                         degrees += Time.deltaTime * 10;
+
+                        if (state == 2 && Input.GetMouseButton(0)) {
+                                pullTime += Time.deltaTime;
+                                if (pullTime > 2) {
+                                        item.Reset();
+                                        gameController.Caught(1);
+                                        Destroy(gameObject);
+                                }
+                        }
                 }
         }
 
@@ -49,16 +58,18 @@ public class Fish1Controller : FishParentController
         // TODO: make this a continuous check
         public void OnTriggerEnter2D(Collider2D collision)
         {
-                if (collision.CompareTag("Bobber")) {
+                if (collision.CompareTag("Bobber"))
+                {
                         bob = collision.GetComponent<BobberController>();
-                        if (bob.GetState() == 1) {
+                        if (bob.GetState() == 1)
+                        {
                                 bob.SetState(2);
                                 bob.SetFish(this);
                                 item = bob.parentRod;
                                 state = 1;
 
                                 // Clamp bobber to fish?
-                                bob.pathPosition = transform.position + 
+                                bob.pathPosition = transform.position +
                                     new Vector3((direction % 2) * (2 - direction), ((direction - 1) % 2) * (direction - 3), 0);
 
                                 // Changing animation
@@ -72,9 +83,7 @@ public class Fish1Controller : FishParentController
 
         public override int Reel()
         {
-                item.Reset();
-                gameController.Caught(1 );
-                Destroy(gameObject);
+                state = 2;
                 return 1;
         }
 }

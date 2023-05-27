@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour
 
         // Player state
         private int playerState;
-        private string[] playerStates = { "idle", "casting", "fishing", "fixing", "carrying"};
+        private string[] playerStates = { "idle", "casting", "fishing", "fixing", "carrying", "reeling"};
 
         // Player initialization
         public GameObject playerPrefab;
@@ -26,6 +26,9 @@ public class GameController : MonoBehaviour
         // Player data
         private float boatHealth = 100f;
         private int fishCaught = 0;
+        //Spawner Initialization
+        public GameObject spawnerPrefab;
+        private SpawnerController spawnerController;
 
         // Start is called before the first frame update
         void Start()
@@ -37,7 +40,8 @@ public class GameController : MonoBehaviour
                 boatController.gameController = this;
                 playerController.boatController = boatController;
                 boatController.playerController = playerController;
-
+                spawnerController = Instantiate(spawnerPrefab, Vector2.zero, Quaternion.identity).GetComponent<SpawnerController>();
+                spawnerController.gameController = this;
         }
 
         // Update is called once per frame
@@ -66,7 +70,7 @@ public class GameController : MonoBehaviour
         }
         // Caught a fish
         public void Caught(int fishType) {
-                fishCaught++;
+                fishCaught += fishType;
                 fishMessage.text = fishCaught.ToString();
         }
         public void BoatHeal(int health) {

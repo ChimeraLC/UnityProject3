@@ -95,11 +95,12 @@ public class BobberController : MonoBehaviour
 
         public int Pull() {
                 if (state == 2) {
-                        // Pulling fish
+                        /* Pulling fish
                         if (clampedFish != null) {
                                 clampedFish.Reel();
                         }
-                        return 1;        
+                        */
+                        return 1;
                 }
                 return 0;
         }
@@ -127,5 +128,6 @@ public class BobberController : MonoBehaviour
         // Set caught fish
         public void SetFish(FishParentController fish) {
                 clampedFish = fish;
+                parentRod.clampedFish = fish;
         }
 }

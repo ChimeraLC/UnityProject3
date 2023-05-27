@@ -4,6 +4,9 @@ using UnityEngine;
 
 public abstract class FishParentController : MonoBehaviour
 {
+        public GameController gameController;
+        protected BobberController bob;
+        protected ItemController item;
         // Start is called before the first frame update
         void Start()
         {
