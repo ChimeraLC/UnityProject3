@@ -54,6 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameController: {fileID: 0}
+  progressBarPrefab: {fileID: 7656969425841270470, guid: d52bf5eaa7d22e4428a9dd66b32b27c0, type: 3}
 --- !u!212 &230662698977774213
 SpriteRenderer:
   m_ObjectHideFlags: 0

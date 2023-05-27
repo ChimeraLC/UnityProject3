@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ public class BobberController : MonoBehaviour
         public GameController gameController;
         public ItemController parentRod;
 
+
         private FishParentController clampedFish;
 
         private BoxCollider2D col;
@@ -28,9 +30,11 @@ public class BobberController : MonoBehaviour
         {
                 //Debug.Log("Bobber destination: " + destination);
                 pathPosition = transform.position;
-
+                // Initially disable collision while in air
                 col = GetComponent<BoxCollider2D>();
                 col.enabled = false;
+
+                // Setting marking position
         }
 
         // Update is called once per frame
@@ -42,6 +46,8 @@ public class BobberController : MonoBehaviour
                         // Simulated slowdown.
                         pathPosition += velocity * Time.deltaTime;
                         velocity -= 6 * direction * Time.deltaTime;
+
+                        // TODO: mark landnig location, should be initialvelocity ^2 / 12
 
                         // Additional upward stuff.
                         transform.position = pathPosition +
@@ -86,11 +92,13 @@ public class BobberController : MonoBehaviour
 
         }
 
-        public void SetDestination(Vector2 destination) {
+        public Vector2 SetDestination(Vector2 destination) {
+                // Editing destination directions
                 this.destination = destination;
                 velocity = (destination - (Vector2)transform.position) * 1.5f;
                 totalDistance = velocity.magnitude;
                 direction = velocity.normalized;
+                return velocity;
         }
 
         public int Pull() {
@@ -128,6 +136,6 @@ public class BobberController : MonoBehaviour
         // Set caught fish
         public void SetFish(FishParentController fish) {
                 clampedFish = fish;
-                parentRod.clampedFish = fish;
+                parentRod.SetFish(fish);
         }
 }

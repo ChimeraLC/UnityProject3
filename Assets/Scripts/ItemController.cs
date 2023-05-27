@@ -6,16 +6,22 @@ using UnityEngine.UIElements;
 
 public class ItemController : MonoBehaviour
 {
-        public GameObject bobber;
-        private GameObject curBobber;
         public GameController gameController;
-        public FishParentController clampedFish;
+        private FishParentController clampedFish;
         private BobberController bobberController;
-        private LineRenderer fishingLine;
         private SpriteRenderer spriteRenderer;
         private int castState = 0;
         private float castAngle;
         public int reflectState = 1;
+
+        // Fishing bobber and line
+        public GameObject bobber;
+        private GameObject curBobber;
+        private LineRenderer fishingLine;
+
+        // Casting marker
+        public GameObject markerPrefab;
+        private GameObject marker;
 
         // Sprite updates
         public Sprite sprRod;
@@ -32,6 +38,10 @@ public class ItemController : MonoBehaviour
                 fishingLine.startWidth = 0.02f;
                 fishingLine.endWidth = 0.02f;
                 spriteRenderer = GetComponent<SpriteRenderer>();
+
+                // landing marker
+                marker = Instantiate(markerPrefab, Vector2.zero, Quaternion.identity);
+                marker.SetActive(false);
         }
 
         // Update is called once per frame
@@ -41,7 +51,18 @@ public class ItemController : MonoBehaviour
                 spriteRenderer.flipX = (reflectState == 1) ? false : true;
                 // Charging up cast.
                 if (castState == 1) {
+
+
+                        // Mouse position.
+                        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
                         castAngle = Mathf.Min(castAngle + 45 * Time.deltaTime, 90);
+
+                        // Updating marker
+                        Vector2 velocity = (mousePosition - (Vector2)transform.parent.position).normalized *
+                            castAngle / 15 * 1.5f;
+                        marker.transform.position = transform.parent.position +
+                            (Vector3)velocity.normalized * Mathf.Pow(velocity.magnitude, 2) / 12;
 
                         // Releasing cast.
                         if (Input.GetMouseButtonUp(0)) {
@@ -51,14 +72,12 @@ public class ItemController : MonoBehaviour
                                         // Set player state to fishing
                                         gameController.SetState(2);
                                         castState = 2;
-                                        // Mouse position.
-                                        Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                                         // Create bobber
                                         curBobber = Instantiate(bobber, transform.parent.position, Quaternion.identity);
                                         bobberController = curBobber.GetComponent<BobberController>();
-                                        bobberController.SetDestination(
-                                            (mousePosition - (Vector2)transform.parent.position).normalized * castAngle / 15
-                                            + (Vector2)transform.parent.position);
+                                        bobberController.SetDestination((mousePosition - (Vector2)transform.parent.position)
+                                                .normalized * castAngle / 15 + (Vector2)transform.parent.position);
+
                                         bobberController.parentRod = this;
                                         bobberController.bounds = bounds;
                                         bobberController.gameController = gameController;
@@ -71,6 +90,9 @@ public class ItemController : MonoBehaviour
                                         // Set player state to idle
                                         gameController.SetState(0);
                                 }
+
+                                // Disable marker
+                                marker.SetActive(false);
                         }
                 }
 
@@ -81,7 +103,7 @@ public class ItemController : MonoBehaviour
 
                         //Animation for pulling
                         if (Input.GetMouseButton(0)) {
-                                castAngle = Mathf.Lerp(castAngle, 50, 0.3f);
+                                castAngle = Mathf.Lerp(castAngle, 50, 0.05f) + Random.Range(-3, 3);
                         }
                         else
                         {
@@ -116,6 +138,9 @@ public class ItemController : MonoBehaviour
                 if (castState == 0) {
                         castAngle = 0;
                         castState = 1;
+
+                        // Activate marker
+                        marker.SetActive(true);
                 }
 
                 // Reeling back in
@@ -156,5 +181,10 @@ public class ItemController : MonoBehaviour
                         spriteRenderer.sprite = sprRepairs;
                         transform.localScale = new Vector3(0.75f, 0.75f, 1);
                 }
+        }
+
+        // Setter method for fish
+        public void SetFish(FishParentController clampedFish) {
+                this.clampedFish = clampedFish;
         }
 }

@@ -9,9 +9,14 @@ public class Fish2Controller : FishParentController
         private int state = 0; //0, swimming, 1, clamped, 2, reeling;
 
         private float degrees = 0;
-        private float pullTime = 0;
         private Animator fishAnim;
         // Start is called before the first frame update
+
+        // Fishing progress bar
+        public GameObject progressBarPrefab;
+        private ProgressBarControlledController progressBar;
+        private float pullTime = 0;
+        private float maxPullTime = 2;
         void Start()
         {
                 fishAnim = GetComponent<Animator>();
@@ -36,13 +41,23 @@ public class Fish2Controller : FishParentController
                             -Mathf.Sin(Mathf.Deg2Rad * degrees) * 1, 0);
                         degrees += Time.deltaTime * 10;
 
-                        if (state == 2 && Input.GetMouseButton(0)) {
-                                pullTime += Time.deltaTime;
-                                if (pullTime > 2) {
-                                        item.Reset();
-                                        gameController.Caught(1);
-                                        Destroy(gameObject);
+                        if (state == 2) {
+                                if (Input.GetMouseButton(0))
+                                {
+                                        pullTime += Time.deltaTime;
+                                        if (pullTime > maxPullTime)
+                                        {
+                                                item.Reset();
+                                                gameController.Caught(1);
+                                                Destroy(progressBar.gameObject);
+                                                Destroy(gameObject);
+                                        }
                                 }
+                                else {
+                                        pullTime = Mathf.Max(pullTime - Time.deltaTime / 2, 0);
+                                }
+                                // Set progress bar
+                                progressBar.SetRatio(pullTime / maxPullTime);
                         }
                 }
         }
@@ -84,6 +99,10 @@ public class Fish2Controller : FishParentController
         public override int Reel()
         {
                 state = 2;
+
+                // Create progress bar
+                progressBar = Instantiate(progressBarPrefab, bob.pathPosition + new Vector2(1, 0), Quaternion.identity)
+                    .GetComponent<ProgressBarControlledController>();
                 return 1;
         }
 }

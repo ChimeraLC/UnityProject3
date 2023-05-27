@@ -47,9 +47,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e8ebf2518ad48548804e369fdc9bfae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pathPosition: {x: 0, y: 0}
   bounds: []
   gameController: {fileID: 0}
   parentRod: {fileID: 0}
+  markerPrefab: {fileID: 7100807833990783236, guid: 4687f9de365e6d94fb307a16c89f4b6e, type: 3}
 --- !u!212 &973093453748765355
 SpriteRenderer:
   m_ObjectHideFlags: 0
