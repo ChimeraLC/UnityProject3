@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 
 public class BoatController : MonoBehaviour
@@ -45,14 +46,10 @@ public class BoatController : MonoBehaviour
                         if (Input.GetKeyUp(KeyCode.R) ||
                             CalcPos(playerController.transform.position.x,    // Checking if they leave the vacinity
                             playerController.transform.position.y) != fixPos) {
-                                Debug.Log("failed");
-                                fixState = false;
-                                fixTimer = 0;
-                                Destroy(curBar);
+                                Reset();
 
-                                // Update external objects
+                                // Update state
                                 gameController.SetState(0);
-                                playerController.ItemSetSprite(0);
 
                         }
 
@@ -137,5 +134,16 @@ public class BoatController : MonoBehaviour
                 if (y >= (yScale / 2)) temp -= (int) xScale;
 
                 return temp;
+        }
+        // Helper function to cancel repair operations
+        public void Reset()
+        {
+                Debug.Log("failed");
+                fixState = false;
+                fixTimer = 0;
+                Destroy(curBar);
+
+                // Update external objects
+                playerController.ItemSetSprite(0);
         }
 }

@@ -95,7 +95,7 @@ public class Fish2Controller : FishParentController
                         }
                 }
         }
-
+        
         public override int Reel()
         {
                 state = 2;
@@ -103,6 +103,20 @@ public class Fish2Controller : FishParentController
                 // Create progress bar
                 progressBar = Instantiate(progressBarPrefab, bob.pathPosition + new Vector2(1, 0), Quaternion.identity)
                     .GetComponent<ProgressBarControlledController>();
+                return 1;
+        }
+
+        public override int Release()
+        {
+                // Reset rod
+                item.Reset();
+
+                // Return to swimming state
+                transform.rotation = Quaternion.identity;
+                state = 0;
+                Destroy(progressBar.gameObject);
+
+                //TODO: reset animation
                 return 1;
         }
 }

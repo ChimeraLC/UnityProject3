@@ -164,7 +164,22 @@ public class ItemController : MonoBehaviour
                 // Set state back to idle
                 gameController.SetState(0);
                 clampedFish = null;
+
+                // Additional case for when stopping mid cast
+                marker.SetActive(false);
         }
+        // Releases fish or resets rod without reeling
+        public void Release() {
+                if (clampedFish != null)
+                {
+                        clampedFish.Release();
+                }
+                else {
+                        Reset();
+                }
+                         
+        }
+
         public void SetBounds(float[] newBounds) {
                 bounds = newBounds;
         }
@@ -180,6 +195,10 @@ public class ItemController : MonoBehaviour
                 {
                         spriteRenderer.sprite = sprRepairs;
                         transform.localScale = new Vector3(0.75f, 0.75f, 1);
+                }
+                if (state == -1)
+                {
+                        spriteRenderer.sprite = null;
                 }
         }
 

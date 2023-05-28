@@ -26,4 +26,6 @@ public abstract class FishParentController : MonoBehaviour
 
         // What happens when fish is reeled in.
         public abstract int Reel();
+        // Releasing hook without reeling
+        public abstract int Release();
 }

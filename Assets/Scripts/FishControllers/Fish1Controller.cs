@@ -77,4 +77,13 @@ public class Fish1Controller : FishParentController
                 Destroy(gameObject);
                 return 1;
         }
+
+
+        public override int Release()
+        {
+                item.Reset();
+                transform.rotation = Quaternion.identity;
+                state = 1;
+                return 1;
+        }
 }

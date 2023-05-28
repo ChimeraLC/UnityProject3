@@ -14,7 +14,7 @@ public class GameController : MonoBehaviour
 
         // Player state
         private int playerState;
-        private string[] playerStates = { "idle", "casting", "fishing", "fixing", "carrying", "reeling"};
+        private string[] playerStates = { "idle", "casting", "fishing", "fixing", "carrying", "reeling", "hurt"};
 
         // Player initialization
         public GameObject playerPrefab;
