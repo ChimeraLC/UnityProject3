@@ -36,16 +36,40 @@ public class Fish1Controller : FishParentController
                             -Mathf.Sin(Mathf.Deg2Rad * degrees) * 1, 0);
                         degrees += Time.deltaTime * 10;
                 }
+
+                // rough boundary checker
+                if (Mathf.Abs(transform.position.x) > 20 || Mathf.Abs(transform.position.y) > 20) {
+                        Destroy(gameObject);
+                }
         }
 
-        public override void Hook() { 
-        
+        public override void Hook(GameObject bobber)
+        {
+                bob = bobber.GetComponent<BobberController>();
+                if (bob.GetState() == 1)
+                {
+                        bob.SetState(2);
+                        bob.SetFish(this);
+                        //item = bob.parentRod;
+                        state = 1;
+
+                        // Clamp bobber to fish?
+                        bob.pathPosition = transform.position +
+                                new Vector3((direction % 2) * (2 - direction), ((direction - 1) % 2) * (direction - 3), 0);
+
+                        // Changing animation
+                        GetComponent<Animator>().SetInteger("clamped", 1);
+                        // changing pivot
+                        //GetComponent<RectTransform>().pivot = 
+                        //    new Vector2((direction % 2) * (2 - direction)/2 + 0.5f, ((direction - 1) % 2) * (direction - 3)/2 + 0.5f);
+                }
         }
 
         public override void SetDirection(int dir) {
                 direction = dir;
                 GetComponent<Animator>().SetInteger("direction", dir);
         }
+        /*
         // TODO: make this a continuous check
         public void OnTriggerEnter2D(Collider2D collision)
         {
@@ -69,8 +93,9 @@ public class Fish1Controller : FishParentController
                         }
                 }
         }
+        */
 
-        public override int Reel()
+        public override int Reel(ItemController item)
         {
                 item.Reset();
                 gameController.Caught(1 );
@@ -79,7 +104,7 @@ public class Fish1Controller : FishParentController
         }
 
 
-        public override int Release()
+        public override int Release(ItemController item)
         {
                 item.Reset();
                 transform.rotation = Quaternion.identity;

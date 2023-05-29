@@ -60,6 +60,7 @@ public class PlayerController : MonoBehaviour
                                 itemController.SetSprite(0);
                         }
                         //TODO: hurt animation
+                        playerSprite.UpdateAnimationHurt();
                 }
                 // Loss of control while hurt
                 else
@@ -131,7 +132,7 @@ public class PlayerController : MonoBehaviour
                         if (Input.GetKeyDown(KeyCode.H))
                         {
 
-                                Hit(1);
+                                Hit(1, Vector2.left);
                         }
 
                 }
@@ -141,7 +142,7 @@ public class PlayerController : MonoBehaviour
                 itemController.SetSprite(state);
         }
         // Damaging character
-        public void Hit(float intensity) {
+        public void Hit(float intensity, Vector2 dir) {
                 int curState = gameController.GetState();
                 // Release any potential rods
                 if (curState == 1 || curState == 2 || curState == 5)
@@ -155,6 +156,9 @@ public class PlayerController : MonoBehaviour
                 }
                 itemController.SetSprite(-1);
                 gameController.SetState(6);
+
+                // Update sprite animator
+                playerSprite.StartAnimationHurt();
 
                 // Calculating hurttimer
                 hurtTimer = 0;

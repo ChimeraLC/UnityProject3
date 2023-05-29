@@ -152,7 +152,7 @@ public class ItemController : MonoBehaviour
                         // Call fish's reel mechanic
                         else {
                                 gameController.SetState(5);
-                                clampedFish.Reel();
+                                clampedFish.Reel(this);
                         }
                 }
 
@@ -172,7 +172,7 @@ public class ItemController : MonoBehaviour
         public void Release() {
                 if (clampedFish != null)
                 {
-                        clampedFish.Release();
+                        clampedFish.Release(this);
                 }
                 else {
                         Reset();

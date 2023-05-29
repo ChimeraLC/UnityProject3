@@ -91,7 +91,21 @@ public class BobberController : MonoBehaviour
 
 
         }
-
+        // Collision detection
+        
+        public void OnTriggerEnter2D(Collider2D collision)
+        {
+                Debug.Log("hit");
+                if (collision.CompareTag("Fish"))
+                {
+                        // Only hook a single thing
+                        col.enabled = false;
+                        
+                        // Call hook code of the fish
+                        collision.GetComponent<FishParentController>().Hook(gameObject);
+                }
+        }
+        
         public Vector2 SetDestination(Vector2 destination) {
                 // Editing destination directions
                 this.destination = destination;

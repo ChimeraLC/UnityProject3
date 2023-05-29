@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - Bobber
+  - Fish
   layers:
   - Default
   - TransparentFX

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 7945302322842231114}
   m_Layer: 0
   m_Name: Fish1
-  m_TagString: Untagged
+  m_TagString: Fish
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53,6 +53,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca2b757c1715bf84e8ef42daf2401abb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameController: {fileID: 0}
 --- !u!212 &230662698977774213
 SpriteRenderer:
   m_ObjectHideFlags: 0

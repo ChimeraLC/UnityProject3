@@ -14,6 +14,7 @@ public class Fish2Controller : FishParentController
 
         // Fishing progress bar
         public GameObject progressBarPrefab;
+        private ItemController itemController;
         private ProgressBarControlledController progressBar;
         private float pullTime = 0;
         private float maxPullTime = 2;
@@ -47,7 +48,7 @@ public class Fish2Controller : FishParentController
                                         pullTime += Time.deltaTime;
                                         if (pullTime > maxPullTime)
                                         {
-                                                item.Reset();
+                                                itemController.Reset();
                                                 gameController.Caught(1);
                                                 Destroy(progressBar.gameObject);
                                                 Destroy(gameObject);
@@ -60,19 +61,45 @@ public class Fish2Controller : FishParentController
                                 progressBar.SetRatio(pullTime / maxPullTime);
                         }
                 }
+
+                // rough boundary checker
+                if (Mathf.Abs(transform.position.x) > 20 || Mathf.Abs(transform.position.y) > 20)
+                {
+                        Destroy(gameObject);
+                }
         }
 
-        public override void Hook() { 
-        
+        public override void Hook(GameObject bobber) {
+                bob = bobber.GetComponent<BobberController>();
+                if (bob.GetState() == 1)
+                {
+                        bob.SetState(2);
+                        bob.SetFish(this);
+                        itemController = bob.parentRod;
+                        state = 1;
+
+                        // Clamp bobber to fish?
+                        bob.pathPosition = transform.position +
+                                new Vector3((direction % 2) * (2 - direction), ((direction - 1) % 2) * (direction - 3), 0);
+
+                        // Changing animation
+                        GetComponent<Animator>().SetInteger("clamped", 1);
+                        // changing pivot
+                        //GetComponent<RectTransform>().pivot = 
+                        //    new Vector2((direction % 2) * (2 - direction)/2 + 0.5f, ((direction - 1) % 2) * (direction - 3)/2 + 0.5f);
+                }
         }
 
         public override void SetDirection(int dir) {
                 direction = dir;
                 GetComponent<Animator>().SetInteger("direction", dir);
         }
-        // TODO: make this a continuous check
+
+        // Old code
+        /*
         public void OnTriggerEnter2D(Collider2D collision)
         {
+                Debug.Log("hit");
                 if (collision.CompareTag("Bobber"))
                 {
                         bob = collision.GetComponent<BobberController>();
@@ -95,8 +122,9 @@ public class Fish2Controller : FishParentController
                         }
                 }
         }
-        
-        public override int Reel()
+        */
+
+        public override int Reel(ItemController item)
         {
                 state = 2;
 
@@ -106,7 +134,7 @@ public class Fish2Controller : FishParentController
                 return 1;
         }
 
-        public override int Release()
+        public override int Release(ItemController item)
         {
                 // Reset rod
                 item.Reset();
@@ -114,8 +142,9 @@ public class Fish2Controller : FishParentController
                 // Return to swimming state
                 transform.rotation = Quaternion.identity;
                 state = 0;
-                Destroy(progressBar.gameObject);
-
+                if (progressBar != null) {
+                        Destroy(progressBar.gameObject);
+                }
                 //TODO: reset animation
                 return 1;
         }

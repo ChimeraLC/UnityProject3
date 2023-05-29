@@ -6,7 +6,7 @@ public abstract class FishParentController : MonoBehaviour
 {
         public GameController gameController;
         protected BobberController bob;
-        protected ItemController item;
+        //protected ItemController item;
         // Start is called before the first frame update
         void Start()
         {
@@ -18,14 +18,14 @@ public abstract class FishParentController : MonoBehaviour
         {
         
         }
-        // Function for when 
-        public abstract void Hook();
+        // Function for when bobber lands in hitbox
+        public abstract void Hook(GameObject bobber);
 
         // Set direction of fish travel
         public abstract void SetDirection(int dir);
 
         // What happens when fish is reeled in.
-        public abstract int Reel();
+        public abstract int Reel(ItemController item);
         // Releasing hook without reeling
-        public abstract int Release();
+        public abstract int Release(ItemController item);
 }

@@ -48,6 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishingRod: {fileID: 8195944969124407748, guid: 58721323dd7e4e049b4b6954afcdc017, type: 3}
   gameController: {fileID: 0}
+  boatController: {fileID: 0}
 --- !u!143 &4016668220780245355
 CharacterController:
   m_ObjectHideFlags: 0
@@ -121,6 +122,7 @@ MonoBehaviour:
   - {fileID: 1882330710, guid: 558321b8b6b487d4d8b46727d425220b, type: 3}
   - {fileID: -1052518677, guid: 558321b8b6b487d4d8b46727d425220b, type: 3}
   - {fileID: 1815877663, guid: 558321b8b6b487d4d8b46727d425220b, type: 3}
+  hurtSprite: {fileID: 21300000, guid: 7908803c8a3fe8a46a2a877ab3afd82f, type: 3}
 --- !u!212 &4016668221474027212
 SpriteRenderer:
   m_ObjectHideFlags: 0

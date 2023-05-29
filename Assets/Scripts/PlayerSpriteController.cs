@@ -7,6 +7,7 @@ public class PlayerSpriteController : MonoBehaviour
 {
         private SpriteRenderer playerSR;
         public Sprite[] animSprites;
+        public Sprite hurtSprite;
         private float animationTimer = 0;
         private float animationSpeed = 1.5f;
 
@@ -42,6 +43,22 @@ public class PlayerSpriteController : MonoBehaviour
                 transform.rotation = Quaternion.AngleAxis(10 * (float)Math.Sin(animationTimer * Math.PI / 180), Vector3.forward);
                 transform.localPosition = fishingRod.transform.localPosition = 
                     new Vector2(0, 0.4f + 0.5f * (float)Math.Abs(Math.Sin(animationTimer * Math.PI / 180)));
+        }
+        // Methods used for the hurt animation
+        public void StartAnimationHurt() {
+                // Improve the calculations on this
+                animationTimer = 0;
+                playerSR.sprite = hurtSprite;
+                transform.rotation = Quaternion.identity;
+        }
+        public void UpdateAnimationHurt()
+        {
+                animationTimer += 360 * animationSpeed * Time.deltaTime;
+                if (animationTimer <= 180)
+                {
+                        transform.localPosition = new Vector2(0, 0.4f + 1 * (float)Math.Abs(Math.Sin(animationTimer * Mathf.Deg2Rad)));
+
+                }
         }
 
         // Update alpha of sprite
