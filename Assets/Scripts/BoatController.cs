@@ -33,6 +33,15 @@ public class BoatController : MonoBehaviour
         private bool fixState = false;
         private int fixPos;
         private GameObject curBar;
+
+        // Shake effects
+        private float _timer;
+        private Vector3 _randomPos;
+
+        public float _time = 0.2f;
+        public float _distance = 0.1f;
+        public float _delayBetweenShakes = 0f;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -65,7 +74,9 @@ public class BoatController : MonoBehaviour
         void Update()
         {
 
-
+                if (Input.GetKeyDown(KeyCode.O)) {
+                        StartCoroutine(Shake());
+                }
                 // Fixing
                 if (fixState) {
                         fixTimer += Time.deltaTime;
@@ -347,4 +358,30 @@ public class BoatController : MonoBehaviour
                 }
         }
 
+
+        // Shaking effect
+        private IEnumerator Shake()
+        {
+                _timer = 0f;
+
+                while (_timer < _time)
+                {
+                        _timer += Time.deltaTime;
+
+                        _randomPos = (UnityEngine.Random.insideUnitSphere * _distance);
+
+                        transform.position = _randomPos;
+
+                        if (_delayBetweenShakes > 0f)
+                        {
+                                yield return new WaitForSeconds(_delayBetweenShakes);
+                        }
+                        else
+                        {
+                                yield return null;
+                        }
+                }
+
+                transform.position = Vector2.zero;
+        }
 }
