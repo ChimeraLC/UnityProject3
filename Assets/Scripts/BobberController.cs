@@ -14,7 +14,7 @@ public class BobberController : MonoBehaviour
         private int state = 0; //0 - thrown, 1 - sitting, 2 - caught
         private float lifetime;
         //boat bounds
-        public float[] bounds;
+        public BoatController boatController;
 
         public GameController gameController;
         public ItemController parentRod;
@@ -58,12 +58,14 @@ public class BobberController : MonoBehaviour
                         if (Vector2.Dot(velocity, direction) < 0) {
                                 state = 1;
                                 pathPosition = transform.position;
+                                // Changing layer
+                                GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Water");
+
                                 // Enable collider
                                 col.enabled = true;
 
                                 // checking bounds
-                                if (transform.position.x < bounds[0] && transform.position.x > bounds[1] &&
-                                    transform.position.y < bounds[2] && transform.position.y > bounds[3]) {
+                                if (boatController.CheckPosition(transform.position.x, transform.position.y) != null) {
                                         Destroy(gameObject);
                                         parentRod.Reset();
                                 }
@@ -95,7 +97,7 @@ public class BobberController : MonoBehaviour
         
         public void OnTriggerEnter2D(Collider2D collision)
         {
-                Debug.Log("hit");
+                //Debug.Log("hit");
                 if (collision.CompareTag("Fish"))
                 {
                         // Only hook a single thing

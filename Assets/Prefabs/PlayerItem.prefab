@@ -46,10 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4745ec6dba655c4d97b7b5a6d68af55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bobber: {fileID: 7477036072949208835, guid: 41029b6c883719f4a95300fc463c095e, type: 3}
   gameController: {fileID: 0}
-  clampedFish: {fileID: 0}
   reflectState: 1
+  bobber: {fileID: 7477036072949208835, guid: 41029b6c883719f4a95300fc463c095e, type: 3}
   markerPrefab: {fileID: 7100807833990783236, guid: 4687f9de365e6d94fb307a16c89f4b6e, type: 3}
   sprRod: {fileID: 21300000, guid: 237ffbc62689cf84ba783f7f461768bc, type: 3}
   sprRepairs: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
@@ -91,8 +90,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1350578463
+  m_SortingLayer: 3
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 237ffbc62689cf84ba783f7f461768bc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -143,9 +142,9 @@ LineRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1350578463
+  m_SortingLayer: 3
+  m_SortingOrder: 1
   m_Positions:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 1}

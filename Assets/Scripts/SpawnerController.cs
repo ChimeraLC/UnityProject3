@@ -29,6 +29,7 @@ public class SpawnerController : MonoBehaviour
         void SpawnEnemy() {
                 // Creating fish
                 fish = Instantiate(fish, new Vector2(-12, Random.Range(-3, 3)), Quaternion.identity);
+                fish.transform.SetParent(transform);
                 // Setting inital stuff
                 fish.GetComponent<FishParentController>().SetDirection(1);
                 fish.GetComponent<FishParentController>().gameController = gameController;

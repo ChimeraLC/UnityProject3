@@ -44,3 +44,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Water
+    uniqueID: 1009727855
+    locked: 0
+  - name: Boat
+    uniqueID: 3177145215
+    locked: 0
+  - name: Player
+    uniqueID: 1350578463
+    locked: 0
+  - name: UI
+    uniqueID: 3544211949
+    locked: 0

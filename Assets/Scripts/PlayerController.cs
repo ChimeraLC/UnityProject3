@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
                 rod.transform.parent = transform;
                 itemController = rod.GetComponent<ItemController>();
                 itemController.SetBounds(bounds);
+                itemController.boatController = boatController;
                 itemController.gameController = gameController;
 
                 playerSprite.SetRod(rod);
@@ -76,15 +77,19 @@ public class PlayerController : MonoBehaviour
 
                         //normalize and move
                         moveDir.Normalize();
-                        playerCC.Move(speed * moveDir * Time.deltaTime);
 
-                        // Remaining in bounds.
-                        Vector2 boundPos = transform.position;
-                        boundPos.x = Mathf.Min(transform.position.x, bounds[0]);
-                        boundPos.x = Mathf.Max(boundPos.x, bounds[1]);
-                        boundPos.y = Mathf.Min(transform.position.y, bounds[2]);
-                        boundPos.y = Mathf.Max(boundPos.y, bounds[3]);
+                        // TODO: fix these calculations to be more robust
+                        // Precalculate move
+                        Vector3 boundPos = transform.position + speed * (Vector3)moveDir * Time.deltaTime;
 
+                        if (boatController.CheckPosition(boundPos.x, transform.position.y) == null)
+                        {
+                                boundPos.x = Mathf.Floor(boundPos.x) + 0.5f - moveDir.x/100;
+                        }
+                        if (boatController.CheckPosition(transform.position.x, boundPos.y) == null)
+                        {
+                                boundPos.y = Mathf.Floor(boundPos.y) + 0.5f - moveDir.y / 100;
+                        }
 
                         transform.position = boundPos;
 
@@ -128,11 +133,35 @@ public class PlayerController : MonoBehaviour
                                 }
                         }
 
+
+                        // Placing new tiles
+                        if (Input.GetKey(KeyCode.Q)) {
+                                if (gameController.GetState() == 0) { 
+                                        if ((mousePosition - (Vector2) transform.position).magnitude < 2) {
+                                                boatController.PlaceMarker(mousePosition.x, mousePosition.y);        
+                                        }
+                                }
+                        }
+                        if (Input.GetKeyUp(KeyCode.Q)) {
+                                if (gameController.GetState() == 0)
+                                {
+                                        if ((mousePosition - (Vector2)transform.position).magnitude < 2)
+                                        {
+                                                boatController.Place(mousePosition.x, mousePosition.y);
+                                        }
+                                }
+                        }
+
                         // Test state
                         if (Input.GetKeyDown(KeyCode.H))
                         {
 
                                 Hit(1, Vector2.left);
+                        }
+
+                        if (Input.GetKeyDown(KeyCode.Y))
+                        {
+                                boatController.DestroyPosition(mousePosition.x, mousePosition.y);
                         }
 
                 }

@@ -52,8 +52,8 @@ public class GameController : MonoBehaviour
 
                 // Temporary health elements
                 if (Input.GetKeyDown(KeyCode.T)) {
-                        boatHealth -= 20;
-                        boatController.NewHole();
+                        if (boatController.NewHole())
+                                boatHealth -= 20;
                 }
 
         }

@@ -7,9 +7,11 @@ using UnityEngine.UIElements;
 public class ItemController : MonoBehaviour
 {
         public GameController gameController;
+        public BoatController boatController;
         private FishParentController clampedFish;
         private BobberController bobberController;
         private SpriteRenderer spriteRenderer;
+        
         private int castState = 0;
         private float castAngle;
         public int reflectState = 1;
@@ -79,7 +81,7 @@ public class ItemController : MonoBehaviour
                                                 .normalized * castAngle / 15 + (Vector2)transform.parent.position);
 
                                         bobberController.parentRod = this;
-                                        bobberController.bounds = bounds;
+                                        bobberController.boatController = boatController;
                                         bobberController.gameController = gameController;
                                 }
                                 // Not charged enough.
@@ -121,7 +123,8 @@ public class ItemController : MonoBehaviour
                         fishingLine.enabled = false;
 
                         // Check state of bobber
-                        bobberController.Pull();
+                        if (bobberController != null)
+                                bobberController.Pull();
                         // Destroy bobber
                         Destroy(curBobber);
                 }

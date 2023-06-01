@@ -9,6 +9,8 @@ public class Fish2Controller : FishParentController
         private int state = 0; //0, swimming, 1, clamped, 2, reeling;
 
         private float degrees = 0;
+        private float degreesTarget = 15;
+        private float degreesOriginal;
         private Animator fishAnim;
         // Start is called before the first frame update
 
@@ -39,8 +41,20 @@ public class Fish2Controller : FishParentController
                 if (state >= 1) { 
                         transform.rotation = Quaternion.Euler(Vector3.forward * degrees);
                         transform.position = bob.transform.position + new Vector3(-Mathf.Cos(Mathf.Deg2Rad * degrees) * 1,
-                            -Mathf.Sin(Mathf.Deg2Rad * degrees) * 1, 0);
-                        degrees += Time.deltaTime * 10;
+                            -Mathf.Sin(Mathf.Deg2Rad * degrees) * 1 - 0.2f, 0);
+
+                        if (degreesTarget > degrees)
+                        {
+                                degrees += Time.deltaTime * 80;
+                                if (degrees >= degreesTarget) degreesTarget *= -1;
+                        }
+                        else {
+                                degrees -= Time.deltaTime * 80;
+                                if (degrees < degreesTarget) {
+                                        degreesTarget *= -1;
+                                }
+                        }
+                        
 
                         if (state == 2) {
                                 if (Input.GetMouseButton(0))
@@ -78,6 +92,9 @@ public class Fish2Controller : FishParentController
                         itemController = bob.parentRod;
                         state = 1;
 
+                        // Saving animation state
+                        degreesOriginal = gameObject.transform.eulerAngles.x;
+
                         // Clamp bobber to fish?
                         bob.pathPosition = transform.position +
                                 new Vector3((direction % 2) * (2 - direction), ((direction - 1) % 2) * (direction - 3), 0);
@@ -93,6 +110,9 @@ public class Fish2Controller : FishParentController
         public override void SetDirection(int dir) {
                 direction = dir;
                 GetComponent<Animator>().SetInteger("direction", dir);
+
+                // Setting collision size
+                GetComponent<BoxCollider2D>().size = new Vector2(1.5f/(1 + (dir + 1) % 2), 1.5f/(1 + dir % 2));
         }
 
         // Old code

@@ -9,6 +9,7 @@ public class EnemyEyeBasicController : EnemyParentController
         // Sprite parts
         private GameObject sclera;
         private GameObject pupil;
+        private GameObject player;
 
         // Eye animation
         private float animationTime;
@@ -20,24 +21,33 @@ public class EnemyEyeBasicController : EnemyParentController
                 // Getting sprite parts
                 sclera = transform.GetChild(0).gameObject;
                 pupil = transform.GetChild(1).gameObject;
+
+                // Getting player character
+                player = GameObject.FindGameObjectWithTag("Player");
         }
 
         // Update is called once per frame
         void Update()
         {
+                if (player == null) {
+                        player = GameObject.FindGameObjectWithTag("Player");
+                }
                 /*
                 animationTime += Time.deltaTime;
                 if (animationTime > 1) {
-                        angleTarget = Random.Range(0, 360);
+                        angleTarget = Random.Range(-30, 30);
                 }
-                */
+                
 
                 pupil.transform.localPosition = new Vector2(Mathf.Cos(angleCurrent * Mathf.Deg2Rad), Mathf.Sin(angleCurrent * Mathf.Deg2Rad));
 
                 if (state == 1) {
                         angleCurrent += Time.deltaTime * 90;
                 }
-
+                */
+                if (state == 0) { 
+                        pupil.transform.localPosition = (player.transform.position - transform.position).normalized;
+                }
         }
 
         public override void SetDirection(int dir) { 
