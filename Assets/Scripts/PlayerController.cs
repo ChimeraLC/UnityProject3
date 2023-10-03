@@ -127,7 +127,8 @@ public class PlayerController : MonoBehaviour
                         if (Input.GetKeyDown(KeyCode.R))
                         {
                                 // Check state idle or currently carrying
-                                if (gameController.GetState() == 0 || gameController.GetState() == 4)
+                                //if (gameController.GetState() == 0 || gameController.GetState() == 4)
+                                if (gameController.GetState() == 0)
                                 {
                                         boatController.Fix(transform.position.x, transform.position.y);
                                 }

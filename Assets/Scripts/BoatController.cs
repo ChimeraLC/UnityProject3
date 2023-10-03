@@ -37,6 +37,7 @@ public class BoatController : MonoBehaviour
         // Shake effects
         private float _timer;
         private Vector3 _randomPos;
+        private float _slowTimer = 0;
 
         public float _time = 0.2f;
         public float _distance = 0.1f;
@@ -73,6 +74,17 @@ public class BoatController : MonoBehaviour
         // Update is called once per frame
         void Update()
         {
+                // Marker
+                if (!Input.GetKey(KeyCode.Q))
+                {
+                        marker.SetActive(false);
+                }
+                // Boat swaying
+                _slowTimer += Time.deltaTime;
+                if (_slowTimer > 360) {
+                        _slowTimer -= 360;
+                }
+                transform.position = new Vector2(Mathf.Cos(Mathf.Deg2Rad * _slowTimer * 30) / 10, Mathf.Cos(Mathf.Deg2Rad * _slowTimer * 20) / 5);
 
                 if (Input.GetKeyDown(KeyCode.O)) {
                         StartCoroutine(Shake());
@@ -155,14 +167,17 @@ public class BoatController : MonoBehaviour
 
                 // Picking up supplies
                 //if (1 == 1 || fixPos == tileTotal) {
+                /*
                 if (gameController.GetState() != 4) { 
                         gameController.SetState(4);
                         // Update item sprite
                         playerController.ItemSetSprite(1);
                 }
+                */
 
                 // Initiating a fix
-                else if (holes[fixPos] != null && gameController.GetState() == 4)
+                //if (holes[fixPos] != null && gameController.GetState() == 4)
+                if (holes[fixPos] != null)
                 {
                         // Update state
                         gameController.SetState(3);
@@ -261,6 +276,7 @@ public class BoatController : MonoBehaviour
                         // Checking if the tile is connected
                         GameObject temp = Instantiate(tilePrefab, new Vector2(xPos, yPos), Quaternion.identity);
                         temp.transform.SetParent(transform);
+                        temp.transform.localPosition = new Vector2(xPos, yPos);
                         SetTile(xPos, yPos, temp);
                         tileMade++;
                         CheckTiles();
@@ -295,7 +311,7 @@ public class BoatController : MonoBehaviour
                             PlaceMarkerHelper(xPos + 1, yPos) ||
                             PlaceMarkerHelper(xPos, yPos - 1) ||
                             PlaceMarkerHelper(xPos, yPos + 1)) {
-                                marker.transform.position = new Vector2(xPos, yPos);
+                                marker.transform.position = new Vector2(xPos, yPos) + (Vector2) transform.position;
                         }
                 }
         }
